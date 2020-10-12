@@ -8,6 +8,8 @@ from torch.autograd import Variable
 from torch.hub import load_state_dict_from_url
 from torchvision.models.resnet import ResNet, Bottleneck
 import geffnet
+from rexnetv1 import ReXNetV1
+from resnest.torch import resnest101
 
 
 class Swish(torch.autograd.Function):
@@ -113,6 +115,49 @@ class Effnet_Landmark(nn.Module):
         self.metric_classify = ArcMarginProduct_subcenter(512, out_dim)
         self.enet.classifier = nn.Identity()
 
+    def extract(self, x):
+        return self.enet(x)
+
+    def forward(self, x):
+        x = self.extract(x)
+        logits_m = self.metric_classify(self.swish(self.feat(x)))
+        return logits_m
+
+
+class RexNet20_Landmark(nn.Module):
+
+    def __init__(self, enet_type, out_dim, load_pretrained=True):
+        super(RexNet20_Landmark, self).__init__()
+        self.enet = ReXNetV1(width_mult=2.0)
+        if load_pretrained:
+            pretrain_wts = "/workspace/rexnetv1_2.0x.pth"            
+            sd = torch.load(pretrain_wts)
+            self.enet.load_state_dict(sd, strict=True)        
+        
+        self.feat = nn.Linear(self.enet.output[1].in_channels, 512)
+        self.swish = Swish_module()
+        self.metric_classify = ArcMarginProduct_subcenter(512, out_dim)
+        self.enet.output = nn.Identity()
+
+    def extract(self, x):
+        return self.enet(x)
+
+    def forward(self, x):
+        x = self.extract(x)
+        logits_m = self.metric_classify(self.swish(self.feat(x)))
+        return logits_m
+        
+
+class ResNest101_Landmark(nn.Module):
+
+    def __init__(self, enet_type, out_dim):
+        super(ResNest101_Landmark, self).__init__()
+        self.enet = resnest101(pretrained=True)
+        self.feat = nn.Linear(self.enet.fc.in_features, 512)
+        self.swish = Swish_module()
+        self.metric_classify = ArcMarginProduct_subcenter(512, out_dim)
+        self.enet.fc = nn.Identity()
+        
     def extract(self, x):
         return self.enet(x)
 

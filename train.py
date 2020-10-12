@@ -14,7 +14,6 @@ import numpy as np
 import pandas as pd
 from tqdm import tqdm as tqdm
 from sklearn.metrics import cohen_kappa_score, confusion_matrix
-from sklearn.model_selection import train_test_split, StratifiedKFold
 
 import torch
 import torch.nn as nn
@@ -32,7 +31,7 @@ from apex.parallel import DistributedDataParallel
 from dataset import LandmarkDataset, get_df, get_transforms
 from util import global_average_precision_score, GradualWarmupSchedulerV2
 from models import DenseCrossEntropy, Swish_module
-from models import ArcFaceLossAdaptiveMargin, Effnet_Landmark#, Resnest_Landmark, Seresnext_Landmark
+from models import ArcFaceLossAdaptiveMargin, Effnet_Landmark, RexNet20_Landmark, ResNest101_Landmark
 
 
 def parse_args():
@@ -246,14 +245,12 @@ if __name__ == '__main__':
     os.makedirs(args.log_dir, exist_ok=True)
     os.environ['CUDA_VISIBLE_DEVICES'] = args.CUDA_VISIBLE_DEVICES
 
-    # if args.enet_type == 'resnest101':
-    #     ModelClass = Resnest_Landmark
-    # elif args.enet_type == 'seresnext101':
-    #     ModelClass = Seresnext_Landmark
-    # elif 'efficientnet' in args.enet_type:
-    ModelClass = Effnet_Landmark
-    # else:
-    #     raise NotImplementedError()
+    if args.enet_type == 'nest101':
+        ModelClass = ResNest101_Landmark
+    elif args.enet_type == 'rex20':
+        ModelClass = RexNet20_Landmark
+    else:
+        ModelClass = Effnet_Landmark
 
     set_seed(0)
 
