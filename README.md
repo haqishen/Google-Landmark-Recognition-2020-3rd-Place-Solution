@@ -1,16 +1,28 @@
-# Landmark-Pvt
+## Google Landmark Recognition 2020 Competition Third Place Solution
 
-## HARDWARE: (The following specs were used to create the original solution)
+paper: https://arxiv.org/abs/2010.05350
+
+solution summary: https://www.kaggle.com/c/landmark-recognition-2020/discussion/187757
+
+
+### HARDWARE: (The following specs were used to create the original solution)
+
 Ubuntu 18.04.3 LTS
+
 Intel(R) Xeon(R) CPU E5-2698 v4 @ 2.20GHz (80 cores)
+
 8 x NVIDIA Tesla V100 32G
 
-## SOFTWARE (python packages are detailed separately in `requirements.txt`):
+### SOFTWARE (python packages are detailed separately in `requirements.txt`):
+
 Python 3.6.10
+
 CUDA Version 11.0.194
+
 nvidia Driver Version: 418.116.00
 
-## Data preparation
+
+### Data preparation
 
 1. Download the Google Landmarks Dataset v2 to `./data` using the scripts at https://github.com/cvdfoundation/google-landmark This is our training data.
 
@@ -21,7 +33,7 @@ nvidia Driver Version: 418.116.00
 4. Run `python preprocess.py` It will read `./train.csv`, create folds and save `./train_0.csv` for training, and save `./idx2landmark_id.pkl` to be used by the submission kernel.
 
 
-## Training
+### Training
 
 Training commands of the 9 models.
 
@@ -106,12 +118,9 @@ python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type 
 
 ```
 
-## Predicting
+### Predicting
 
 This competition was a code competition. Teams submitted inference notebooks which were ran on hidden test sets. We made public the submission notebook on Kaggle at https://www.kaggle.com/boliu0/landmark-recognition-2020-third-place-submission
 
 All the trained models are linked in that notebook as public datasets. The same notebook is also included in this repo for reference.
 
-## paper
-
-https://arxiv.org/abs/2010.05350
