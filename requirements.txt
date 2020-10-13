@@ -1,0 +1,12 @@
+albumentations==0.4.6
+apex==0.1
+geffnet==0.9.8
+torch==1.6.0a0+9907a3e
+resnest==0.0.6b20201012
+pandas==0.24.2
+torchvision==0.7.0a0
+warmup_scheduler==0.3.2
+tqdm==4.31.1
+opencv_python==4.4.0.44
+numpy==1.18.5
+scikit_learn==0.23.2

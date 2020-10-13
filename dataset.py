@@ -55,15 +55,18 @@ def get_transforms(image_size):
     return transforms_train, transforms_val
 
 
-def get_df(kernel_type, data_dir, data_dir2, train_step):
+def get_df(kernel_type, data_dir, train_step):
 
-    df = pd.read_csv(os.path.join(data_dir, f'train_0.csv'))
+    df = pd.read_csv('train_0.csv')
 
     if train_step == 0:
-        df_train = pd.read_csv(os.path.join(data_dir2, 'train.csv')).drop(columns=['url'])
-        df = df_train.merge(df, on=['id','landmark_id'], how='left')
-
-    df['filepath'] = df['id'].apply(lambda x: os.path.join(data_dir, 'train', x[0], x[1], x[2], f'{x}.jpg'))
+        df_train = pd.read_csv(os.path.join(data_dir, 'train.csv')).drop(columns=['url'])
+    else:
+        cls_81313 = df.landmark_id.unique()
+        df_train = pd.read_csv(os.path.join(data_dir, 'train.csv')).drop(columns=['url']).set_index('landmark_id').loc[cls_81313].reset_index()
+        
+    df_train['filepath'] = df_train['id'].apply(lambda x: os.path.join(data_dir, 'train', x[0], x[1], x[2], f'{x}.jpg'))
+    df = df_train.merge(df, on=['id','landmark_id'], how='left')
 
     landmark_id2idx = {landmark_id: idx for idx, landmark_id in enumerate(sorted(df['landmark_id'].unique()))}
     idx2landmark_id = {idx: landmark_id for idx, landmark_id in enumerate(sorted(df['landmark_id'].unique()))}

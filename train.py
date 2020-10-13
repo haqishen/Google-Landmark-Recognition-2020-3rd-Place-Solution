@@ -38,11 +38,10 @@ def parse_args():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--kernel-type', type=str, required=True)
-    parser.add_argument('--data-dir', type=str, default='/raid/')
-    parser.add_argument('--data-dir2', type=str, default='/raid/GLD2')
+    parser.add_argument('--data-dir', type=str, default='/raid/GLD2')
     parser.add_argument('--train-step', type=int, required=True)
     parser.add_argument('--image-size', type=int, required=True)
-    parser.add_argument("--local_rank", type=int, default=-1)
+    parser.add_argument("--local_rank", type=int)
     parser.add_argument('--enet-type', type=str, required=True)
     parser.add_argument('--batch-size', type=int, default=64)
     parser.add_argument('--num-workers', type=int, default=32)
@@ -50,11 +49,11 @@ def parse_args():
     parser.add_argument('--n-epochs', type=int, default=15)
     parser.add_argument('--start-from-epoch', type=int, default=1)
     parser.add_argument('--stop-at-epoch', type=int, default=999)
-    parser.add_argument('--use-amp', action='store_true')
+    parser.add_argument('--use-amp', action='store_false')
     parser.add_argument('--DEBUG', action='store_true')
     parser.add_argument('--model-dir', type=str, default='./weights')
     parser.add_argument('--log-dir', type=str, default='./logs')
-    parser.add_argument('--CUDA_VISIBLE_DEVICES', type=str, default='-1')
+    parser.add_argument('--CUDA_VISIBLE_DEVICES', type=str, default='0,1,2,3,4,5,6,7')
     parser.add_argument('--fold', type=int, default=0)
     parser.add_argument('--load-from', type=str, default='')
     args, _ = parser.parse_known_args()
@@ -144,7 +143,7 @@ def val_epoch(model, valid_loader, criterion, get_output=False):
 def main():
 
     # get dataframe
-    df, out_dim = get_df(args.kernel_type, args.data_dir, args.data_dir2, args.train_step)
+    df, out_dim = get_df(args.kernel_type, args.data_dir, args.train_step)
     print(f"out_dim = {out_dim}")
 
     # get adaptive margin
@@ -183,8 +182,12 @@ def main():
         checkpoint = torch.load(args.load_from,  map_location='cuda:{}'.format(args.local_rank))
         state_dict = checkpoint['model_state_dict']
         state_dict = {k[7:] if k.startswith('module.') else k: state_dict[k] for k in state_dict.keys()}    
-        model.load_state_dict(state_dict, strict=True)        
-        optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
+        if args.train_step==1: 
+            del state_dict['metric_classify.weight']
+            model.load_state_dict(state_dict, strict=False)
+        else:
+            model.load_state_dict(state_dict, strict=True)        
+            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
         del checkpoint, state_dict
         torch.cuda.empty_cache()
         import gc
@@ -216,7 +219,7 @@ def main():
         if args.local_rank == 0:
             content = time.ctime() + ' ' + f'Fold {fold}, Epoch {epoch}, lr: {optimizer.param_groups[0]["lr"]:.7f}, train loss: {np.mean(train_loss):.5f}, valid loss: {(val_loss):.5f}, acc_m: {(acc_m):.6f}, gap_m: {(gap_m):.6f}.'
             print(content)
-            with open(f'../logs/{args.kernel_type}.txt', 'a') as appender:
+            with open(os.path.join(args.log_dir, f'{args.kernel_type}.txt'), 'a') as appender:
                 appender.write(content + '\n')
 
             print('gap_m_max ({:.6f} --> {:.6f}). Saving model ...'.format(gap_m_max, gap_m))
