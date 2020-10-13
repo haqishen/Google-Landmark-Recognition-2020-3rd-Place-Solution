@@ -187,8 +187,8 @@ def main():
             model.load_state_dict(state_dict, strict=False)
         else:
             model.load_state_dict(state_dict, strict=True)        
-            if 'optimizer_state_dict' in checkpoint:
-                optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
+#             if 'optimizer_state_dict' in checkpoint:
+#                 optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
         del checkpoint, state_dict
         torch.cuda.empty_cache()
         import gc
@@ -218,7 +218,7 @@ def main():
         val_loss, acc_m, gap_m = val_epoch(model, valid_loader, criterion)
 
         if args.local_rank == 0:
-            content = time.ctime() + ' ' + f'Fold {fold}, Epoch {epoch}, lr: {optimizer.param_groups[0]["lr"]:.7f}, train loss: {np.mean(train_loss):.5f}, valid loss: {(val_loss):.5f}, acc_m: {(acc_m):.6f}, gap_m: {(gap_m):.6f}.'
+            content = time.ctime() + ' ' + f'Fold {args.fold}, Epoch {epoch}, lr: {optimizer.param_groups[0]["lr"]:.7f}, train loss: {np.mean(train_loss):.5f}, valid loss: {(val_loss):.5f}, acc_m: {(acc_m):.6f}, gap_m: {(gap_m):.6f}.'
             print(content)
             with open(os.path.join(args.log_dir, f'{args.kernel_type}.txt'), 'a') as appender:
                 appender.write(content + '\n')
