@@ -1,6 +1,19 @@
 # Landmark-Pvt
 
-# Training
+## Pre-processing
+
+1. Download the Google Landmarks Dataset v2 using the scripts at https://github.com/cvdfoundation/google-landmark This is our training data.
+
+2. Download the label csv file at https://s3.amazonaws.com/google-landmark/metadata/train.csv and put it in the same directory as `train` folder
+
+2. Run 
+```
+python preprocess.py
+```
+It will read `./train.csv`, create folds and save `./train_0.csv` for training, and save `./idx2landmark_id.pkl` to be used by the submission kernel.
+
+
+## Training
 
 Training commands of the 9 models.
 
@@ -65,3 +78,9 @@ python train.py --kernel-type rex20_DDP_final_768_300w_f4_50ep --train-step 1 --
 python train.py --kernel-type rex20_DDP_final_768_300w_f4_35ep_load20resume --train-step 2 --data-dir ./data/ --init-lr 0.00005 --image-size 768 --batch-size 13 --enet-type nest101 --n-epochs 5 --CUDA_VISIBLE_DEVICES 0 --fold 4 --load-from weights/rex20_DDP_final_768_300w_f4_50ep_fold4.pth
 
 ```
+
+## Predicting
+
+This competition was a code competition. Teams submitted inference notebooks which were ran on hidden test sets. We made public the submission notebook on Kaggle at https://www.kaggle.com/boliu0/landmark-recognition-2020-third-place-submission
+
+All the trained models are linked in that notebook as public datasets. The same notebook is also included in this repo for reference.
