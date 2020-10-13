@@ -187,7 +187,8 @@ def main():
             model.load_state_dict(state_dict, strict=False)
         else:
             model.load_state_dict(state_dict, strict=True)        
-            optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
+            if 'optimizer_state_dict' in checkpoint:
+                optimizer.load_state_dict(checkpoint['optimizer_state_dict'])   
         del checkpoint, state_dict
         torch.cuda.empty_cache()
         import gc
