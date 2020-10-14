@@ -109,7 +109,7 @@ class Effnet_Landmark(nn.Module):
 
     def __init__(self, enet_type, out_dim):
         super(Effnet_Landmark, self).__init__()
-        self.enet = geffnet.create_model(enet_type.replace('-', '_'), pretrained=False)
+        self.enet = geffnet.create_model(enet_type.replace('-', '_'), pretrained=True)
         self.feat = nn.Linear(self.enet.classifier.in_features, 512)
         self.swish = Swish_module()
         self.metric_classify = ArcMarginProduct_subcenter(512, out_dim)
@@ -130,7 +130,7 @@ class RexNet20_Landmark(nn.Module):
         super(RexNet20_Landmark, self).__init__()
         self.enet = ReXNetV1(width_mult=2.0)
         if load_pretrained:
-            pretrain_wts = "/workspace/rexnetv1_2.0x.pth"            
+            pretrain_wts = "./rexnetv1_2.0x.pth"            
             sd = torch.load(pretrain_wts)
             self.enet.load_state_dict(sd, strict=True)        
         
