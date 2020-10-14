@@ -1,5 +1,7 @@
 ## Google Landmark Recognition 2020 Competition Third Place Solution
 
+competition: https://www.kaggle.com/c/landmark-retrieval-2020
+
 paper: https://arxiv.org/abs/2010.05350
 
 solution summary: https://www.kaggle.com/c/landmark-recognition-2020/discussion/187757
