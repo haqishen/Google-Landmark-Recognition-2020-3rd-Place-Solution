@@ -51,7 +51,7 @@ python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type 
 
 python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b7ns_final_672_300w_f0_load13_ep20 --train-step 2 --data-dir ${data_dir} --init-lr 5e-5 --image-size 672 --batch-size 10 --enet-type tf_efficientnet_b7_ns --n-epochs 20 --stop-at-epoch 1 --fold 0 --load-from ${model_dir}/b7ns_DDP_final_512_300w_f0_40ep_fold0.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b7ns_final_672_300w_f0_load13_load1_14ep --train-step 3 --data-dir ${data_dir} --init-lr 0.00001 --image-size 672 --batch-size 10 --enet-type tf_efficientnet_b7_ns --n-epochs 14 --stop-at-epoch 4 --fold 0 --load-from ${model_dir}/b7ns_final_672_300w_f0_load13_ep20_fold0.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b7ns_final_672_300w_f0_load13_load1_14ep --train-step 3 --data-dir ${data_dir} --image-size 672 --batch-size 10 --enet-type tf_efficientnet_b7_ns --n-epochs 14 --stop-at-epoch 4 --fold 0 --load-from ${model_dir}/b7ns_final_672_300w_f0_load13_ep20_fold0.pth
 ```
 
 ```
@@ -81,7 +81,7 @@ python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type 
 
 python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b5ns_DDP_final_576_300w_f2_40ep --train-step 1 --data-dir ${data_dir} --image-size 576 --batch-size 24 --enet-type tf_efficientnet_b5_ns --n-epochs 40 --stop-at-epoch 33 --fold 2 --load-from ${model_dir}/b5ns_DDP_final_256_300w_f2_10ep_fold2.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b5ns_final_768_300w_f2_load33_5ep_3e-5_32G --train-step 2 --data-dir ${data_dir} --init-lr 3e-5 --image-size 768 --batch-size 13 --enet-type tf_efficientnet_b5_ns --n-epochs 5 --fold 2 --load-from ${model_dir}/b5ns_DDP_final_576_300w_f2_40ep_fold2.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b5ns_final_768_300w_f2_load33_5ep_3e-5_32G --train-step 2 --data-dir ${data_dir} --init-lr 3e-5 --image-size 768 --batch-size 13 --enet-type tf_efficientnet_b5_ns --n-epochs 5 --stop-at-epoch 4 --fold 2 --load-from ${model_dir}/b5ns_DDP_final_576_300w_f2_40ep_fold2.pth
 ```
 
 ```
@@ -91,9 +91,9 @@ python -u -m torch.distributed.launch --nproc_per_node=2 train.py --kernel-type 
 
 python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b4ns_DDP_final_704_300w_f0_50ep --train-step 1 --data-dir ${data_dir} --image-size 704 --batch-size 22 --enet-type tf_efficientnet_b4_ns --n-epochs 50 --stop-at-epoch 16 --fold 0 --load-from ${model_dir}/b4ns_final_256_400w_f0_10ep_fold0.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b4ns_final_768_300w_f0_load16_20ep --train-step 2 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 16 --enet-type tf_efficientnet_b4_ns --n-epochs 20 --stop-at-epoch 1 --fold 0 --load-from ${model_dir}/b4ns_DDP_final_704_300w_f0_50ep_fold0_ep16.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b4ns_final_768_300w_f0_load16_20ep --train-step 2 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 16 --enet-type tf_efficientnet_b4_ns --n-epochs 20 --stop-at-epoch 1 --fold 0 --load-from ${model_dir}/b4ns_DDP_final_704_300w_f0_50ep_fold0.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b4ns_final_768_300w_f0_load16_20ep --train-step 3 --data-dir ${data_dir} --image-size 768 --batch-size 16 --enet-type tf_efficientnet_b4_ns --n-epochs 20 --stop-at-epoch 4 --fold 0 --load-from ${model_dir}/b4ns_final_768_300w_f0_load16_20ep_fold0_ep1.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b4ns_final_768_300w_f0_load16_20ep --train-step 3 --data-dir ${data_dir} --image-size 768 --batch-size 16 --enet-type tf_efficientnet_b4_ns --n-epochs 20 --stop-at-epoch 4 --fold 0 --load-from ${model_dir}/b4ns_final_768_300w_f0_load16_20ep_fold0.pth
 ```
 
 ```
@@ -103,9 +103,9 @@ python -u -m torch.distributed.launch --nproc_per_node=2 train.py --kernel-type 
 
 python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b3ns_DDP_final_544_300w_f1_40ep --train-step 1 --data-dir ${data_dir} --image-size 544 --batch-size 17 --enet-type tf_efficientnet_b3_ns --n-epochs 40 --stop-at-epoch 29 --fold 1 --load-from ${model_dir}/b3ns_final_256_400w_f1_10ep_fold1.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b3ns_final_768_300w_f1_load29_5ep --train-step 2 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 22 --enet-type tf_efficientnet_b3_ns --n-epochs 5 --fold 1 --load-from ${model_dir}/b3ns_DDP_final_544_300w_f1_40ep_fold1_ep29.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b3ns_final_768_300w_f1_load29_5ep --train-step 2 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 22 --enet-type tf_efficientnet_b3_ns --n-epochs 5 --fold 1 --load-from ${model_dir}/b3ns_DDP_final_544_300w_f1_40ep_fold1.pth
 
-python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b3ns_final_768_300w_f1_load29_5ep5ep --train-step 3 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 22 --enet-type tf_efficientnet_b3_ns --n-epochs 5 --fold 1 --load-from ${model_dir}/b3ns_final_768_300w_f1_load29_5ep_fold1_full_ep5.pth
+python -u -m torch.distributed.launch --nproc_per_node=8 train.py --kernel-type b3ns_final_768_300w_f1_load29_5ep5ep --train-step 3 --data-dir ${data_dir} --init-lr 5e-5 --image-size 768 --batch-size 22 --enet-type tf_efficientnet_b3_ns --n-epochs 5 --fold 1 --load-from ${model_dir}/b3ns_final_768_300w_f1_load29_5ep_fold1.pth
 ```
 
 ```
